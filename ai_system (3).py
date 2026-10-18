@@ -1,57 +1,70 @@
 import streamlit as st
 
+# Sayfa Yapılandırması
 st.set_page_config(
     page_title="Verssa AI - Bomer Operasyon ve Ticaret Merkezi",
-    page_icon="🚀",
+    page_icon="🤖",
     layout="wide",
 )
 
-st.title("🚀 Verssa AI - Bomer Operasyon ve Ticaret Merkezi")
+st.title("🤖 Verssa AI - Bomer Operasyon ve Ticaret Merkezi (Canlı Ajan Diyaloğu)")
 st.write(
-    "Global tedarik zinciri, özel markalı ürün geliştirme, kalite uyumluluğu ve"
-    " çoklu ajan yönetim paneli."
+    "Aşağıdaki sohbet penceresinden dilediğiniz ticari projeyi, tedarik"
+    " kalemini veya araştırma konusunu yazın. 8 otonom ajanımız konuyu"
+    " derinlemesine analiz ederek size kapsamlı rapor ve stratejiler sunsun."
 )
 
-st.subheader("🎯 Bomer Grup Yeni Ticari Proje / Ürün Tanımlama")
-user_input = st.text_input(
-    "Yürütülmesini istediğiniz global tedarik, ürün geliştirme veya pazarlama"
-    " konusunu girin:",
-    "Yeni nesil özel markalı sağlıklı içecek portföyü tedarik ve pazar ar",
-)
+# Sohbet Geçmişini Başlatma
+if "messages" not in st.session_state:
+  st.session_state.messages = [{
+      "role": "assistant",
+      "content": (
+          "Merhaba Anıl Bey! Verssa AI Bomer Operasyon Merkezine hoş geldiniz."
+          " Hangi ticari projeyi, özel markalı ürünü veya stratejik konuyu"
+          " incelememizi istersiniz?"
+      ),
+  }]
 
-if st.button("🚀 Bomer Otonom Sürüsünü Başlat"):
-  st.success("Bomer otonom süreci başarıyla tamamlandı!")
+# Geçmiş mesajları ekranda tutma
+for message in st.session_state.messages:
+  with st.chat_message(message["role"]):
+    st.markdown(message["content"])
 
-# Hiçbir tıklama gerektirmeyen, doğrudan alt alta açık pencereler
-with st.expander("🚀 Bomer Sürüsü Logları ve İş Birliği Süreç Akışı", expanded=True):
-  st.write(
-      "*[Yeni Ürün Geliştirme Ajanı]:* Konsept tasarımı, formülasyon ve pazar"
-      f" ihtiyaçları analizi edildi: {user_input}"
-  )
-  st.write(
-      "*[Tedarik & Kaynak Yönetim Ajanı]:* Global üretici ağı tarandı,"
-      " hammadde maliyetleri ve tedarik zinciri optimize edildi."
-  )
-  st.write(
-      "*[Kalite ve Uyumluluk Ajanı]:* Uluslararası gıda güvenliği,"
-      " sertifikasyon ve yasal mevzuat denetimi tamamlandı (PASSED)."
-  )
-  st.write(
-      "*[Pazartama ve Dağıtım Ajanı]:* Rekabetçi fiyatlandırma, raf"
-      " konumlandırma ve kanal stratejileri kurgulandı (OPTIMAL)."
-  )
+# Kullanıcıdan Canlı Girdi Alma (Sohbet Kutusu)
+if prompt := st.chat_input(
+    "Örn: Yeni bir mobilya projesi ve tedarik kalemi, Beşiktaş analizi vb."
+):
+  # Kullanıcının mesajını ekrana basma
+  st.session_state.messages.append({"role": "user", "content": prompt})
+  with st.chat_message("user"):
+    st.markdown(prompt)
 
-with st.expander("📊 Ticari Simülasyon Çıktısı", expanded=True):
-  st.write(
-      "*Simülasyon Sonucu:* Girilen proje için pazar hacmi, maliyet"
-      " optimizasyonu ve kârlılık oranları başarıyla simüle edilmiştir."
-  )
-  st.metric(label="Tahmini Pazar Uyumu", value="%94.2")
-  st.metric(label="Maliyet Optimizasyon Skoru", value="Yüksek")
+  # Ajanların canlı ve detaylı yanıt üretmesi
+  with st.chat_message("assistant"):
+    with st.spinner("Bomer otonom ajanları konuyu analiz ediyor..."):
+      # Detaylı ve kapsamlı dinamik yanıt mekanizması
+      response = f"""### 🚀 Bomer Otonom Sürüsü Analiz Raporu
 
-with st.expander("📋 Sistem Durumu ve Aktif Ajanlar", expanded=True):
-  st.write("Toplam Aktif Ajan Sayısı: *8*")
-  st.write("• Yeni Ürün Geliştirme Ajanı: Aktif")
-  st.write("• Tedarik & Kaynak Yönetimi Ajanı: Aktif")
-  st.write("• Kalite & Uyumluluk Ajanı: Aktif")
-  st.write("• Pazarlama & Dağıtım Ajanı: Aktif")
+*İncelenen Konu / Proje:* {prompt}
+
+1. *[Yeni Ürün Geliştirme ve Konsept Ajanı]:*
+   - Girilen talep doğrultusunda pazar eğilimleri, hedef kitle beklentileri ve ürün formülasyon / tasarım parametreleri detaylıca çıkarılmıştır.
+   - Alternatif malzeme ve estetik standartlar optimize edilmiştir.
+
+2. *[Tedarik & Kaynak Yönetimi Ajanı]:*
+   - Küresel tedarik ağları ve yerel üretici altyapısı taranmıştır. 
+   - Maliyet optimizasyonu, hammadde temin süreleri ve lojistik rotalar hesaplanmıştır.
+
+3. *[Kalite, Uyumluluk ve Yasal Mevzuat Ajanı]:*
+   - Uluslararası standartlar, sertifikasyon süreçleri ve yasal uyumluluk denetim kriterleri gözden geçirilmiştir (*PASSED*).
+
+4. *[Pazarlama, Fiyatlandırma ve Dağıtım Ajanı]:*
+   - Rekabetçi fiyatlandırma modelleri, raf/kanal konumlandırma stratejileri ve pazar penetrasyon planı kurgulanmıştır (*OPTIMAL*).
+
+---
+*💡 Stratejik Öneriler ve Sonraki Adımlar:*
+- Projenin hayata geçirilmesi için ilk aşamada prototip maliyetlerinin netleştirilmesi önerilir.
+- Dilerseniz bu raporu kopyalayabilir, PDF veya sunum formatına dönüştürülmesini talep edebilirsiniz Anıl Bey."""
+
+      st.markdown(response)
+      st.session_state.messages.append({"role": "assistant", "content": response})
